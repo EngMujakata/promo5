@@ -75,10 +75,10 @@ body[data-kind=site] .only-shop{display:none!important}
 /* header */
 .header{position:sticky;top:0;z-index:40;background:var(--surface);background:var(--cm-surface-96-transparent);border-bottom:1px solid var(--line);transition:box-shadow .25s}
 .header.stuck{box-shadow:0 8px 24px -16px rgba(0,0,0,.35)}
-.nav{display:flex;align-items:center;gap:18px;min-height:66px}
+.nav{display:flex;align-items:center;gap:18px;min-height:66px;padding:6px 0}
 .brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.4px;text-decoration:none;margin-right:auto;min-width:0;font-family:var(--font-head)}
 .brand span#companyName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.brand .logo{width:40px;height:40px;border-radius:11px;object-fit:contain;flex:none}
+.brand .logo{height:var(--logo-h,56px);width:auto;max-width:min(62vw,460px);border-radius:8px;object-fit:contain;flex:0 1 auto;min-width:0}
 .brand .mark{width:40px;height:40px;border-radius:11px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px;flex:none}
 .navlinks{display:flex;gap:2px}
 .navlinks a{padding:8px 13px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;color:var(--muted);transition:color .2s,background .2s}
@@ -102,7 +102,6 @@ body[data-kind=site] .only-shop{display:none!important}
 .hero{padding:20px 0 0}
 .heroBox{position:relative;border-radius:26px;overflow:hidden;min-height:400px;display:grid;grid-template-columns:1.15fr .85fr;color:#fff;background:linear-gradient(115deg,var(--ink) 8%,var(--cm-brand-78-ink));background-size:cover;background-position:center}
 .heroBox{background-color:var(--ink)}
-.heroBox.hasimg::before{content:"";position:absolute;inset:0;background:linear-gradient(95deg,var(--cm-ink-92-transparent) 5%,var(--cm-ink-60-transparent) 65%,var(--cm-ink-30-transparent))}
 .heroCopy{padding:clamp(26px,5vw,64px);padding-bottom:clamp(64px,8vw,96px);align-self:center;max-width:660px;position:relative;z-index:1}
 .heroCopy h1{font-size:clamp(34px,5.4vw,62px);line-height:1.04;letter-spacing:-.035em;font-weight:800;margin:0 0 14px;overflow-wrap:anywhere}
 .heroCopy p{font-size:clamp(15px,1.7vw,18px);color:rgba(255,255,255,.86);margin:0 0 24px;max-width:480px}
@@ -355,6 +354,19 @@ a.ci:hover{border-color:var(--brand)}
 .rrow .fg{align-items:end}
 .toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:120;background:#101828;color:#fff;padding:12px 18px;border-radius:12px;display:none;max-width:92%;box-shadow:0 12px 30px -10px rgba(0,0,0,.5);font-weight:600;font-size:14px;text-align:center}
 
+.vprog{height:8px;border-radius:99px;background:var(--soft);overflow:hidden;margin:0 0 12px}
+.vprog i{display:block;height:100%;width:0;background:var(--brand);transition:width .2s}
+/* hero sound button, logo cropper, logo preview */
+.hsound{position:absolute;top:14px;right:14px;z-index:5;display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:99px;background:rgba(10,15,25,.74);color:#fff;font-weight:700;font-size:13px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 8px 20px -10px rgba(0,0,0,.6);transition:background .2s,transform .15s}
+.hsound:hover{background:rgba(10,15,25,.9)}
+.hsound:active{transform:scale(.97)}
+.hsound.pulse-on{animation:ring2 2.4s ease-in-out infinite}
+@keyframes ring2{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.45)}60%{box-shadow:0 0 0 12px rgba(255,255,255,0)}}
+.cropwrap{background:repeating-conic-gradient(#d9dde3 0% 25%,#f4f5f7 0% 50%) 0 0/16px 16px;border-radius:14px;overflow:hidden;display:flex;justify-content:center;margin-bottom:12px;touch-action:none}
+.cropwrap canvas{display:block;max-width:100%;touch-action:none;cursor:move}
+.logoprev{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px dashed var(--line);border-radius:14px;background:var(--paper);margin:6px 0 12px;min-height:84px;overflow:hidden}
+.logoprev img{height:var(--logo-h,56px);width:auto;max-width:100%;object-fit:contain}
+
 /* keyframes */
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -442,6 +454,43 @@ body[data-th=studio] .mapbox iframe{filter:invert(.9) hue-rotate(180deg) saturat
 body[data-th=studio] .field input,body[data-th=studio] .field textarea,body[data-th=studio] .field select{background:#0f0f16}
 body[data-th=studio] #boot{background:#0b0b10}
 
+/* ===== Hero media: image / slideshow / video ===== */
+.heroMedia{position:absolute;inset:0;overflow:hidden;z-index:0}
+.heroMedia:empty{display:none}
+.hm-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.3s ease}
+.hm-slide.on{opacity:1;animation:kb 10s ease-out forwards}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
+.heroMedia video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.heroMedia iframe{position:absolute;border:0;pointer-events:none;top:50%;left:50%;width:max(100%,177.78vh);height:max(100%,56.25vw);transform:translate(-50%,-50%)}
+.hprev .heroMedia iframe{width:max(100%,320px);height:max(100%,180px)}
+.heroShade{position:absolute;inset:0;z-index:1;pointer-events:none;background:var(--sh)}
+.hm-dots{position:absolute;right:16px;bottom:14px;z-index:2;display:flex;gap:6px}
+.hm-dots i{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.55);transition:width .3s,background .3s}
+.hm-dots i.on{background:#fff;width:22px}
+.heroArt{position:relative;z-index:1}
+.heroBox.tone-light{color:#111}
+.heroBox.tone-light .heroCopy p{color:#222}
+.heroBox.hasmedia:not(.tone-light) .heroCopy h1,.heroBox.hasmedia:not(.tone-light) .heroCopy p,.sHero.hasmedia:not(.tone-light) .sCopy h1,.sHero.hasmedia:not(.tone-light) .sCopy p.sub{text-shadow:0 2px 22px rgba(0,0,0,.4)}
+.heroBox.hasmedia{min-height:420px}
+body .sHero.hasmedia{background:var(--ink);color:#fff;min-height:clamp(430px,64vh,660px);display:flex;align-items:center}
+body .sHero.hasmedia .sHeroIn{grid-template-columns:1fr;width:min(1180px,100% - 32px)}
+body .sHero.hasmedia .sCopy{max-width:680px}
+body .sHero.hasmedia .sCopy p.sub{color:rgba(255,255,255,.92);opacity:1}
+body .sHero.hasmedia .tagpill{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.28)}
+body .sHero.hasmedia .btn.line{color:#fff}
+body .sHero.hasmedia.tone-light{color:#111}
+body .sHero.hasmedia.tone-light .sCopy p.sub{color:#222}
+body .sHero.hasmedia.tone-light .tagpill{background:rgba(255,255,255,.82);color:#111;border-color:rgba(0,0,0,.1)}
+body .sHero.hasmedia.tone-light .btn.line{color:#111}
+body .sHero.hasmedia::before{display:none}
+body:not([data-th=construction]) .sHero.hasmedia::after{display:none}
+.hprev{position:relative;height:200px;border-radius:16px;overflow:hidden;background:var(--ink);color:#fff;display:flex;align-items:center;padding:0 22px;margin:8px 0 14px}
+.hprev.tone-light{color:#111}
+.hprev .hp-copy{position:relative;z-index:2;max-width:70%}
+.hprev .hp-copy b{display:block;font-size:20px;line-height:1.15;margin-bottom:4px;font-family:var(--font-head)}
+.hprev .hp-copy span{font-size:13px;opacity:.9}
+.rng{display:flex;align-items:center;gap:12px}.rng input{flex:1;accent-color:var(--brand)}.rng b{min-width:44px;text-align:right}
+
 /* ===== Responsive ===== */
 @media(max-width:1020px){
   .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -450,7 +499,18 @@ body[data-th=studio] #boot{background:#0b0b10}
   .navact .btn.desk{display:none}
 }
 @media(max-width:820px){
-  .heroBox.hasimg::before{background:var(--cm-ink-78-transparent)}
+  .heroBox.stack-m,body .sHero.stack-m{display:flex;flex-direction:column;align-items:stretch;min-height:0}
+  .heroBox.stack-m .heroMedia,.sHero.stack-m .heroMedia{position:relative;inset:auto;height:clamp(190px,58vw,290px);flex:none}
+  .heroBox.stack-m .heroShade,.sHero.stack-m .heroShade{background:var(--shm)}
+  .heroBox.stack-m .heroCopy{padding:22px 20px 56px}
+  body .sHero.stack-m{padding-top:0}.sHero.stack-m .sHeroIn{padding-top:26px}
+  .heroBox.stack-m.tone-light,body .sHero.stack-m.tone-light{color:#fff}
+  .heroBox.stack-m.tone-light .heroCopy p,body .sHero.stack-m.tone-light .sCopy p.sub{color:rgba(255,255,255,.9)}
+  body .sHero.stack-m.tone-light .tagpill{background:rgba(255,255,255,.16);color:#fff;border-color:rgba(255,255,255,.28)}
+  body .sHero.stack-m.tone-light .btn.line{color:#fff}
+  .heroBox.hasmedia:not(.stack-m){min-height:380px}
+  body .sHero.hasmedia:not(.stack-m){min-height:420px}
+  .hprev{height:170px;padding:0 16px}.hprev .hp-copy{max-width:82%}
   .blob,.dcard,.ctab::before,.ctab::after,.orb{animation:none}
   body[data-th=studio] .sHero::before{animation:none}
   body[data-th=construction] .sHero::after{animation:none}
@@ -471,7 +531,7 @@ body[data-th=studio] #boot{background:#0b0b10}
   body{font-size:14.5px}
   .wrap{width:calc(100% - 28px)}
   
-  .nav{min-height:60px;gap:10px}.brand{font-size:17px}.brand .logo,.brand .mark{width:36px;height:36px}
+  .nav{min-height:60px;gap:10px}.brand{font-size:17px}.brand .mark{width:36px;height:36px}.brand .logo{height:min(var(--logo-h,56px),76px);max-width:58vw}
   .hero{padding-top:12px}.heroBox{border-radius:20px}
   .heroCopy h1{font-size:clamp(32px,10vw,42px)}
   .heroCopy .btn{width:100%}
@@ -532,6 +592,7 @@ body[data-th=studio] #boot{background:#0b0b10}
   <!-- ===== SHOP: hero, features, catalogue ===== -->
   <section class="hero only-shop"><div class="wrap">
     <div class="heroBox" id="heroBox">
+      <div class="heroMedia" id="heroMedia"></div>
       <div class="heroCopy"><h1 id="heroTitle"></h1><p id="heroText"></p><a class="btn primary lg" id="heroCta" href="#catalogue"></a></div>
       <div class="heroArt" id="heroArt"><div class="orb" id="heroIcon"></div></div>
     </div>
@@ -553,6 +614,7 @@ body[data-th=studio] #boot{background:#0b0b10}
 
   <!-- ===== SITE: sections ===== -->
   <section class="sHero only-site" id="sHero">
+    <div class="heroMedia" id="sMedia"></div>
     <div class="wrap sHeroIn"><div class="sCopy" id="sCopy"></div><div class="sVisual" id="sVisual"></div></div>
   </section>
   <div class="marq only-site hidden" id="marq"></div>
@@ -638,6 +700,18 @@ body[data-th=studio] #boot{background:#0b0b10}
   </div>
 </div></div>
 
+<!-- Logo cropper -->
+<div class="modal" id="cropModal"><div class="box" style="width:min(760px,100%)">
+  <div class="mhead"><h2>Crop your logo</h2><button class="x" id="cropX" type="button" aria-label="Close"><span data-ic="x"></span></button></div>
+  <p class="muted" style="margin-top:0">Drag the box to move it. Drag a corner to resize it. Only the area inside the box is used, so crop close to your logo to make it as big and readable as possible.</p>
+  <div class="cropwrap" id="cropWrap"><canvas id="cropCv"></canvas></div>
+  <div class="fg">
+    <div class="field"><label for="cropRatio">Box shape</label><select id="cropRatio"><option value="0">Free</option><option value="1">Square</option><option value="2">Wide (2:1)</option><option value="3">Wide (3:1)</option><option value="4">Banner (4:1)</option></select></div>
+    <div class="field"><label for="cropBg">Background</label><select id="cropBg"><option value="keep">Keep transparent</option><option value="white">Fill with white</option></select></div>
+  </div>
+  <div class="row" style="flex-wrap:wrap"><span class="muted" id="cropInfo"></span><div class="actions" style="margin:0"><button class="btn ghost sm" id="cropTrim" type="button">Trim empty space</button><button class="btn ghost" id="cropCancel" type="button">Cancel</button><button class="btn primary" id="cropOk" type="button">Crop and use</button></div></div>
+</div></div>
+
 <script>
 /* ------------------------------------------------------------------
    Paste this client's Apps Script Web App /exec URL below.
@@ -648,6 +722,8 @@ const CACHE_KEY = "elx_cache_v3_" + API_URL.slice(-14);
 
 /* ===== Icon set (stroke icons, no emojis) ===== */
 const IC = {
+  volume:'<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/>',
+  volumeOff:'<path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/>',
   phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
   mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>',
   pin:'<path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
@@ -703,6 +779,9 @@ const IC = {
   bed:'<path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8v9"/>',
   ruler:'<path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2M11.5 9.5l2-2M8.5 6.5l2-2M17.5 15.5l2-2"/>',
   zap:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>',
+  play:'<path d="m6 3 14 9-14 9z"/>',
+  layers:'<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+  columns:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18"/>',
   trend:'<path d="m22 7-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/>',
   pen:'<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
   quote:'<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2H4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h4"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.76-2-2-2h-4c-1.25 0-2 .75-2 2v6c0 1.25.75 2 2 2h4"/>',
@@ -718,7 +797,7 @@ const IC = {
 };
 const ico = (n, c = "") => '<svg class="ic ' + c + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (IC[n] || IC.star) + '</svg>';
 function hydrate(root) { (root || document).querySelectorAll("[data-ic]").forEach(e => { if (!e.dataset.done) { e.innerHTML = ico(e.dataset.ic); e.dataset.done = 1; e.style.display = e.style.display || "inline-flex"; } }); }
-const SERVICE_ICONS = ["briefcase","chart","laptop","shield","hammer","wrench","building","home","truck","car","heart","activity","scissors","sparkles","leaf","droplet","camera","palette","megaphone","pen","award","star","zap","users","headset","compass","key","lock","globe","tag","trend","utensils","bag","message"];
+const SERVICE_ICONS = ["briefcase","chart","laptop","shield","hammer","wrench","building","home","truck","car","heart","activity","scissors","sparkles","leaf","droplet","camera","palette","megaphone","pen","award","star","zap","users","headset","compass","key","lock","globe","tag","trend","utensils","bag","message","check","clock","pin","phone","whatsapp"];
 const SOCIALS = [["facebook","Facebook"],["instagram","Instagram"],["twitter","X (Twitter)"],["tiktok","TikTok"],["youtube","YouTube"],["linkedin","LinkedIn"]];
 
 /* ===== Product specs (vehicles, property) ===== */
@@ -832,6 +911,7 @@ const safeUrl = u => { u = String(u || "").trim(); return /^https?:\/\//i.test(u
 const normUrl = u => { u = String(u || "").trim(); if (!u) return ""; if (!/^https?:\/\//i.test(u)) u = "https://" + u.replace(/^\/+/, ""); return safeUrl(u); };
 const T = () => THEMES[config.theme] || THEMES.ecommerce;
 const kind = () => T().kind;
+const logoPx = () => { const n = Math.round(Number(config.logoSize)); return Number.isFinite(n) && n >= 28 && n <= 120 ? n : 56; };
 const cash = n => ({USD:"$",ZiG:"ZiG ",ZWL:"ZWL "}[config.currency] || "$") + Number(n || 0).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
 const fmtNum = n => Number(n).toLocaleString("en-US");
 const cartQty = () => cart.reduce((n, p) => n + p.qty, 0);
@@ -843,7 +923,7 @@ function whatsapp(msg) { const n = waNumber(); if (!n) { notify("WhatsApp number
 /* ===== Backend ===== */
 async function api(action, data = {}) {
   if (!API_URL) throw new Error("This website is not connected yet.");
-  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 40000);
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), data._t || 40000);
   try {
     const res = await fetch(API_URL, {method:"POST", body:JSON.stringify({action, token, ...data}), signal:ctl.signal, redirect:"follow"});
     const j = await res.json();
@@ -895,6 +975,7 @@ function applyConfig(c) {
   R.setProperty("--brand", config.primaryColor || t.primaryColor);
   R.setProperty("--ink", config.darkColor || t.darkColor);
   R.setProperty("--accent", config.accentColor || t.accentColor);
+  R.setProperty("--logo-h", logoPx() + "px");
   applyPalette();
   b.dataset.kind = t.kind; b.dataset.th = THEMES[config.theme] ? config.theme : "ecommerce";
   const tc = document.querySelector('meta[name="theme-color"]'); if (tc) tc.content = config.darkColor || t.darkColor;
@@ -912,6 +993,7 @@ function chrome() {
   const logo = safeUrl(config.logoUrl);
   if (logo) { $("logo").src = logo; $("logo").alt = name; $("logo").classList.remove("hidden"); $("mark").classList.add("hidden"); }
   else { $("logo").classList.add("hidden"); $("mark").classList.remove("hidden"); }
+  $("companyName").classList.toggle("hidden", !!logo && config.logoHideName === "yes"); $("brandLink").setAttribute("aria-label", name || "Home");
 
   /* top bar: only items that exist */
   const items = [];
@@ -987,6 +1069,97 @@ $("cForm").addEventListener("submit", async e => {
 $("cAgain").onclick = () => { $("cOk").classList.add("hidden"); $("cFormBody").classList.remove("hidden"); };
 function prefillEnquiry(text) { $("cMsg").value = text; $("cOk").classList.add("hidden"); $("cFormBody").classList.remove("hidden"); $("contact").scrollIntoView({behavior: "smooth"}); setTimeout(() => $("cName").focus({preventScroll: true}), 600); }
 
+
+/* ===== Hero: colour / image / slideshow / video ===== */
+function heroCfgOf() {
+  let c = {}; try { c = JSON.parse(config.heroCfg || "{}") || {}; } catch (e) { c = {}; }
+  const legacy = safeUrl(config.heroImageUrl), site = kind() === "site";
+  let style = c.style || (legacy ? (site ? "split" : "image") : "gradient");
+  if (!site && style === "split") style = "image";
+  const imgs = (Array.isArray(c.images) ? c.images : (legacy ? [legacy] : [])).map(safeUrl).filter(Boolean).slice(0, 6), ov = Number(c.overlay);
+  return {style, images: imgs, video: String(c.video || "").trim(), overlay: Number.isFinite(ov) && c.overlay !== "" && c.overlay != null ? Math.max(0, Math.min(90, ov)) : 55, tone: c.tone === "light" ? "light" : "dark", mobile: c.mobile === "overlay" ? "overlay" : "stacked", speed: [3, 5, 7, 10].includes(Number(c.speed)) ? Number(c.speed) : 5, sound: c.sound === true};
+}
+const ytId = u => { const m = String(u || "").match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/); return m ? m[1] : ""; };
+const isFb = u => /^(?:https?:\/\/)?(?:[\w-]+\.)?(?:facebook\.com|fb\.watch|fb\.com)\//i.test(String(u || "").trim());
+function fbEmbed(u, sound) {
+  u = normUrl(u); if (!u || !isFb(u)) return "";
+  return "https://www.facebook.com/plugins/video.php?href=" + encodeURIComponent(u) + "&show_text=false&autoplay=true&mute=" + (sound ? 0 : 1) + "&loop=true&allowfullscreen=true&width=1280";
+}
+const cssUrl = u => "url('" + String(u).replace(/['"()\s\\]/g, c => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")) + "')";
+function mediaHtml(cfg) {
+  const imgs = cfg.images;
+  if (cfg.style === "video" && cfg.video && !(window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches)) {
+    const y = ytId(cfg.video);
+    if (y) return '<iframe class="vid-yt" title="" aria-hidden="true" tabindex="-1" allow="autoplay; encrypted-media" src="https://www.youtube.com/embed/' + y + '?autoplay=1&mute=1&loop=1&playlist=' + y + '&controls=0&modestbranding=1&playsinline=1&rel=0&disablekb=1&enablejsapi=1' + (/^https?:/.test(location.protocol) ? '&origin=' + encodeURIComponent(location.origin) : '') + '"></iframe>';
+    const fb = fbEmbed(cfg.video, false);
+    if (fb) return '<iframe class="vid-fb" title="" aria-hidden="true" tabindex="-1" allow="autoplay; encrypted-media; picture-in-picture" src="' + esc(fb) + '"></iframe>';
+    const v = safeUrl(cfg.video);
+    if (v) { const did = (v.match(/drive\.usercontent\.google\.com\/download\?id=([\w-]+)/) || [])[1]; return '<video autoplay muted loop playsinline preload="auto"' + (did ? ' data-did="' + esc(did) + '"' : '') + (imgs[0] ? ' poster="' + esc(imgs[0]) + '"' : '') + '><source src="' + esc(v) + '"></video>'; }
+  }
+  if (!imgs.length) return "";
+  const use = cfg.style === "slides" ? imgs : [imgs[0]];
+  return use.map((u, i) => '<div class="hm-slide' + (i ? '' : ' on') + '" style="background-image:' + esc(cssUrl(u)) + '"></div>').join("") + (use.length > 1 ? '<div class="hm-dots">' + use.map((u, i) => '<i class="' + (i ? '' : 'on') + '"></i>').join("") + '</div>' : '');
+}
+function driveFallback(v, box) {
+  const id = v.dataset.did; if (!id || v.dataset.fb) return; v.dataset.fb = "1";
+  const f = document.createElement("iframe"); f.title = "Video"; f.allow = "autoplay; fullscreen"; f.src = "https://drive.google.com/file/d/" + id + "/preview"; f.style.pointerEvents = "auto";
+  v.replaceWith(f); const b = box.querySelector(":scope > .hsound"); if (b) b.remove();
+}
+let soundArm = null;
+function setupSound(box, mediaEl, cfg, on) {
+  const old = box.querySelector(":scope > .hsound"); if (old) old.remove();
+  if (soundArm) { ["click", "keydown"].forEach(t => document.removeEventListener(t, soundArm, true)); soundArm = null; }
+  const media = on && cfg.style === "video" && cfg.sound && !box.classList.contains("hprev") ? mediaEl.querySelector("iframe,video") : null;
+  if (!media) return;
+  const yt = media.classList.contains("vid-yt"), fb = media.classList.contains("vid-fb");
+  let unmuted = false;
+  const yc = (func, args) => { try { media.contentWindow.postMessage(JSON.stringify({event: "command", func, args: args || []}), "*"); } catch (e) {} };
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "hsound pulse-on";
+  const paint = () => { btn.classList.toggle("pulse-on", !unmuted); btn.innerHTML = ico(unmuted ? "volume" : "volumeOff") + "<span>" + (unmuted ? "Mute" : "Tap for sound") + "</span>"; btn.setAttribute("aria-label", unmuted ? "Mute the video" : "Turn the video sound on"); };
+  const setSound = want => {
+    unmuted = want;
+    if (yt) { if (want) { yc("unMute"); yc("setVolume", [100]); yc("playVideo"); } else yc("mute"); }
+    else if (fb) media.src = fbEmbed(cfg.video, want);
+    else { media.muted = !want; if (want) { media.volume = 1; const p = media.play(); if (p && p.catch) p.catch(() => { media.muted = true; unmuted = false; paint(); }); } }
+    paint();
+  };
+  btn.onclick = e => { e.stopPropagation(); setSound(!unmuted); };
+  box.appendChild(btn); paint();
+  if (!fb) {
+    const arm = e => {
+      if (e.target && e.target.closest && e.target.closest(".modal,.hsound")) return;
+      document.removeEventListener("click", arm, true); document.removeEventListener("keydown", arm, true); soundArm = null;
+      if (!unmuted) setSound(true);
+    };
+    soundArm = arm; document.addEventListener("click", arm, true); document.addEventListener("keydown", arm, true);
+  }
+}
+function applyHero(box, mediaEl, cfg) {
+  if (mediaEl._t) { clearInterval(mediaEl._t); mediaEl._t = 0; }
+  const html = ["image", "slides", "video"].includes(cfg.style) ? mediaHtml(cfg) : "";
+  box.classList.toggle("hasmedia", !!html); box.classList.toggle("tone-light", !!html && cfg.tone === "light"); box.classList.toggle("stack-m", !!html && cfg.mobile === "stacked" && !box.classList.contains("hprev"));
+  if (!html) { mediaEl.innerHTML = ""; setupSound(box, mediaEl, cfg, false); return false; }
+  const c = (cfg.tone === "light" ? [255, 255, 255] : hex2rgb(config.darkColor || T().darkColor)).join(","), a = cfg.overlay / 100;
+  box.style.setProperty("--sh", "linear-gradient(95deg,rgba(" + c + "," + a + "),rgba(" + c + "," + (a * 0.72).toFixed(3) + "))");
+  box.style.setProperty("--shm", "rgba(" + c + "," + Math.min(a, 0.25) + ")");
+  mediaEl.innerHTML = html + '<div class="heroShade"></div>';
+  const v = mediaEl.querySelector("video"); if (v) { v.muted = true; const pr = v.play && v.play(); if (pr && pr.catch) pr.catch(() => {}); }
+  setupSound(box, mediaEl, cfg, true);
+  if (v && v.dataset.did) { const src = v.querySelector("source"); if (src) src.addEventListener("error", () => driveFallback(v, box)); v.addEventListener("error", () => driveFallback(v, box)); }
+  const slides = mediaEl.querySelectorAll(".hm-slide");
+  if (slides.length > 1) {
+    let i = 0; const dots = mediaEl.querySelectorAll(".hm-dots i");
+    mediaEl._t = setInterval(() => { if (document.hidden) return; slides[i].classList.remove("on"); if (dots[i]) dots[i].classList.remove("on"); i = (i + 1) % slides.length; slides[i].classList.add("on"); if (dots[i]) dots[i].classList.add("on"); }, cfg.speed * 1000);
+  }
+  return true;
+}
+function featuresCfg() {
+  let c = {}; try { c = JSON.parse(config.features || "{}") || {}; } catch (e) { c = {}; }
+  const def = (T().features || []).map(f => ({icon: f[0], title: f[1], text: f[2]}));
+  const items = (Array.isArray(c.items) ? c.items.filter(x => x && String(x.title || "").trim()) : def).slice(0, 4);
+  return {show: c.show !== false && items.length > 0, items};
+}
+
 /* ===== SHOP: hero, finder, products ===== */
 function shopStatic() {
   const t = T();
@@ -996,11 +1169,11 @@ function shopStatic() {
   $("heroIcon").innerHTML = ico(t.icon);
   $("fQuery").placeholder = t.searchPh;
   $("catalogueTitle").textContent = t.title;
-  const hero = safeUrl(config.heroImageUrl);
-  $("heroBox").style.backgroundImage = hero ? 'url("' + hero.replace(/"/g, "%22") + '")' : ""; $("heroBox").classList.toggle("hasimg", !!hero);
-  $("heroArt").classList.toggle("hidden", !!hero);
-  $("features").style.setProperty("--n", t.features.length);
-  $("features").innerHTML = t.features.map(f => '<div class="feat"><i>' + ico(f[0]) + '</i><div><b>' + esc(f[1]) + '</b><small>' + esc(f[2]) + '</small></div></div>').join("");
+  const mediaOn = applyHero($("heroBox"), $("heroMedia"), heroCfgOf());
+  $("heroArt").classList.toggle("hidden", mediaOn);
+  const fc = featuresCfg(); $("features").parentElement.classList.toggle("hidden", !fc.show);
+  $("features").style.setProperty("--n", fc.items.length || 1);
+  $("features").innerHTML = fc.items.map(f => '<div class="feat"><i>' + ico(f.icon || "star") + '</i><div><b>' + esc(f.title) + '</b><small>' + esc(f.text || "") + '</small></div></div>').join("");
   const enquiry = t.mode === "enquiry";
   $("stripTitle").textContent = enquiry ? "Have a question?" : "Ready to order?";
   $("stripText").textContent = enquiry ? "Message us on WhatsApp and we will get back to you quickly." : "Message us on WhatsApp and we will confirm availability and delivery.";
@@ -1126,14 +1299,15 @@ $("lbPrev").onclick = e => { e.stopPropagation(); lbShow(lbIdx - 1); };
 $("lbNext").onclick = e => { e.stopPropagation(); lbShow(lbIdx + 1); };
 
 function renderSite() {
-  const t = T(), d = siteData(), hero = safeUrl(config.heroImageUrl);
+  const t = T(), d = siteData(), hc = heroCfgOf(), mediaOn = applyHero($("sHero"), $("sMedia"), hc), splitImg = !mediaOn && hc.style === "split" ? hc.images[0] : "";
   const title = config.heroTitle || t.heroTitle, sub = config.description || t.description, cta = config.ctaText || t.ctaText || "Contact us";
   const services = (d.services || []).filter(s => s && s.title), about = d.about || {}, hasAbout = !!(about.title || about.text);
 
   $("sCopy").innerHTML = (config.tagline ? '<span class="tagpill" style="--i:0">' + ico("check") + '<span>' + esc(config.tagline) + '</span></span>' : '') +
     '<h1 style="--i:1">' + esc(title).replace(/\n/g, "<br>") + '</h1><p class="sub" style="--i:2">' + esc(sub) + '</p>' +
     '<div class="sBtns" style="--i:3"><a class="btn primary lg" href="#contact">' + esc(cta) + ico("arrow") + '</a>' + (services.length ? '<a class="btn line lg" href="#services">Our services</a>' : hasAbout ? '<a class="btn line lg" href="#about">About us</a>' : '') + '</div>';
-  $("sVisual").innerHTML = hero ? '<img src="' + esc(hero) + '" alt="">' :
+  $("sVisual").classList.toggle("hidden", mediaOn);
+  $("sVisual").innerHTML = splitImg ? '<img src="' + esc(splitImg) + '" alt="">' :
     '<div class="deco"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><svg class="pulse" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30h200l20-24 30 48 30-48 20 24h300"/></svg>' +
     (services[0] ? '<div class="dcard d1"><i>' + ico(services[0].icon || "star") + '</i><span>' + esc(services[0].title) + '</span></div>' : '') +
     (services[1] ? '<div class="dcard d2"><i>' + ico(services[1].icon || "star") + '</i><span>' + esc(services[1].title) + '</span></div>' : '') + '</div>';
@@ -1188,9 +1362,9 @@ document.addEventListener("click", e => {
   setTimeout(() => { if (h === "#top") window.scrollTo({top: 0, behavior: "smooth"}); else tgt.scrollIntoView({behavior: "smooth", block: "start"}); }, wasOpen ? 80 : 0);
 });
 document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => $(b.dataset.close).classList.remove("open"));
-document.querySelectorAll(".modal").forEach(m => m.addEventListener("mousedown", e => { if (e.target === m) m.classList.remove("open"); }));
+document.querySelectorAll(".modal").forEach(m => m.addEventListener("mousedown", e => { if (e.target === m && m.id !== "cropModal") m.classList.remove("open"); }));
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") { document.querySelectorAll(".modal.open").forEach(m => m.classList.remove("open")); drawer(false); }
+  if (e.key === "Escape") { if ($("cropModal").classList.contains("open") && CR.done) CR.done(null); document.querySelectorAll(".modal.open").forEach(m => m.classList.remove("open")); drawer(false); }
   if ($("lbModal").classList.contains("open")) { if (e.key === "ArrowRight") lbShow(lbIdx + 1); if (e.key === "ArrowLeft") lbShow(lbIdx - 1); }
 });
 window.addEventListener("scroll", () => $("header").classList.toggle("stuck", window.scrollY > 8), {passive: true});
@@ -1217,8 +1391,8 @@ $("loginForm").onsubmit = async e => {
 };
 $("logout").onclick = leaveDashboard;
 
-const TABS_SHOP = [["products", "Products"], ["orders", "Orders"], ["inquiries", "Enquiries"], ["profile", "Business details"], ["theme", "Theme"], ["security", "Security"]];
-const TABS_SITE = [["content", "Website content"], ["inquiries", "Enquiries"], ["profile", "Business details"], ["theme", "Theme"], ["security", "Security"]];
+const TABS_SHOP = [["products", "Products"], ["orders", "Orders"], ["inquiries", "Enquiries"], ["hero", "Hero section"], ["profile", "Business details"], ["theme", "Theme"], ["security", "Security"]];
+const TABS_SITE = [["content", "Website content"], ["hero", "Hero section"], ["inquiries", "Enquiries"], ["profile", "Business details"], ["theme", "Theme"], ["security", "Security"]];
 function renderTabs() {
   const tabs = kind() === "site" ? TABS_SITE : TABS_SHOP;
   if (!tabs.some(t => t[0] === currentTab)) currentTab = tabs[0][0];
@@ -1235,18 +1409,151 @@ function toBase64(file, max, png) {
   });
 }
 async function uploadFile(file, png) { const data = await toBase64(file, png ? 700 : 1500, png); const r = await api("adminUploadImage", {data, mimeType: png ? "image/png" : "image/jpeg", name: file.name.replace(/\.[^.]+$/, "")}); return r.url; }
-function pickFiles(multiple) { return new Promise(res => { const i = document.createElement("input"); i.type = "file"; i.accept = "image/*"; i.multiple = !!multiple; i.onchange = () => res([...i.files]); i.click(); }); }
-function imgField(name, label, value, png) {
+function pickFiles(multiple, accept) { return new Promise(res => { const i = document.createElement("input"); i.type = "file"; i.accept = accept || "image/*"; i.multiple = !!multiple; i.onchange = () => res([...i.files]); i.click(); }); }
+/* ===== ADMIN: video upload (chunked, any size) ===== */
+const blobToB64 = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1] || ""); r.onerror = () => rej(new Error("Could not read the video file.")); r.readAsDataURL(b); });
+async function uploadVideo(file, onProgress) {
+  const mime = file.type || (/\.webm$/i.test(file.name) ? "video/webm" : /\.mov$/i.test(file.name) ? "video/quicktime" : "video/mp4");
+  if (!/^video\/(mp4|webm|quicktime|ogg)$/.test(mime)) throw new Error("Please choose an MP4 or WebM video.");
+  const st = await api("adminVideoStart", {name: file.name, mimeType: mime, size: file.size, _t: 60000});
+  let off = 0, fails = 0;
+  onProgress(0);
+  while (off < file.size) {
+    const part = file.slice(off, off + st.chunkSize), b64 = await blobToB64(part);
+    try {
+      const r = await api("adminVideoChunk", {uploadId: st.uploadId, offset: off, total: file.size, data: b64, _t: 180000});
+      fails = 0;
+      if (r.done) { onProgress(100); return r.url; }
+      off = Math.max(0, Number(r.next) || 0);
+      onProgress(Math.min(99, Math.round(off / file.size * 100)));
+    } catch (err) {
+      if (++fails >= 4 || /expired|Invalid|too large|larger/i.test(err.message)) throw err;
+      await new Promise(z => setTimeout(z, 1500 * fails));
+    }
+  }
+  throw new Error("The upload did not finish. Please try again.");
+}
+let hvBusy = false;
+async function heroVideoUpload(btn) {
+  if (hvBusy) return;
+  const [f] = await pickFiles(false, "video/mp4,video/webm,video/quicktime,video/*"); if (!f) return;
+  const bar = () => $("hvBar"), fill = () => $("hvFill"), stat = () => $("hvStat");
+  hvBusy = true; btn.disabled = true; if (bar()) bar().classList.remove("hidden");
+  const upd = p => { if (fill()) fill().style.width = p + "%"; if (stat()) stat().textContent = "Uploading… " + p + "%. Please keep this window open."; };
+  try {
+    const url = await uploadVideo(f, upd);
+    if (hd && currentTab === "hero") { hd.video = url; renderHeroEditor(); }
+    notify("Video uploaded. Press Save hero section to publish it.");
+  } catch (err) { notify(err.message); if (stat()) stat().textContent = err.message; }
+  finally { hvBusy = false; if (btn.isConnected) btn.disabled = false; if (bar()) bar().classList.add("hidden"); }
+}
+/* ===== ADMIN: logo cropper ===== */
+const CR = {img: null, s: 1, r: {x: 0, y: 0, w: 0, h: 0}, ratio: 0, drag: null, done: null};
+function cropImage(file) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("That file is not a readable image.")); };
+    img.onload = () => {
+      CR.img = img; CR.ratio = 0; $("cropRatio").value = "0"; $("cropBg").value = "keep";
+      CR.done = out => { CR.done = null; URL.revokeObjectURL(url); $("cropModal").classList.remove("open"); resolve(out); };
+      $("cropModal").classList.add("open");
+      requestAnimationFrame(() => {
+        const wrap = $("cropWrap"), maxW = Math.max(240, Math.min((wrap.clientWidth || 680) - 2, 700)), maxH = Math.max(200, Math.round(window.innerHeight * 0.5));
+        CR.s = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight, 3);
+        const cv = $("cropCv"); cv.width = Math.max(40, Math.round(img.naturalWidth * CR.s)); cv.height = Math.max(40, Math.round(img.naturalHeight * CR.s));
+        CR.r = {x: 0, y: 0, w: cv.width, h: cv.height}; cropDraw();
+      });
+    };
+    img.src = url;
+  });
+}
+async function cropAndUpload(file) {
+  const b64 = await cropImage(file); if (!b64) return "";
+  const r = await api("adminUploadImage", {data: b64, mimeType: "image/png", name: "logo"}); return r.url;
+}
+const cropHandles = () => { const r = CR.r; return [[r.x, r.y, "nw"], [r.x + r.w, r.y, "ne"], [r.x, r.y + r.h, "sw"], [r.x + r.w, r.y + r.h, "se"]]; };
+function cropDraw() {
+  const cv = $("cropCv"), c = cv.getContext("2d"), r = CR.r;
+  c.clearRect(0, 0, cv.width, cv.height); c.drawImage(CR.img, 0, 0, cv.width, cv.height);
+  c.fillStyle = "rgba(10,15,25,.55)";
+  c.fillRect(0, 0, cv.width, r.y); c.fillRect(0, r.y + r.h, cv.width, cv.height - r.y - r.h); c.fillRect(0, r.y, r.x, r.h); c.fillRect(r.x + r.w, r.y, cv.width - r.x - r.w, r.h);
+  c.strokeStyle = "#fff"; c.lineWidth = 2; c.strokeRect(r.x + 1, r.y + 1, Math.max(0, r.w - 2), Math.max(0, r.h - 2));
+  c.strokeStyle = "rgba(255,255,255,.45)"; c.lineWidth = 1; c.beginPath();
+  for (let i = 1; i < 3; i++) { c.moveTo(r.x + r.w * i / 3, r.y); c.lineTo(r.x + r.w * i / 3, r.y + r.h); c.moveTo(r.x, r.y + r.h * i / 3); c.lineTo(r.x + r.w, r.y + r.h * i / 3); }
+  c.stroke(); c.fillStyle = "#fff"; c.strokeStyle = "#111"; c.lineWidth = 1.5;
+  cropHandles().forEach(h => { c.beginPath(); c.rect(h[0] - 7, h[1] - 7, 14, 14); c.fill(); c.stroke(); });
+  $("cropInfo").textContent = "Selected area: " + Math.round(r.w / CR.s) + " × " + Math.round(r.h / CR.s) + " px";
+}
+function cropPos(e) { const cv = $("cropCv"), b = cv.getBoundingClientRect(); return {x: (e.clientX - b.left) * cv.width / b.width, y: (e.clientY - b.top) * cv.height / b.height}; }
+$("cropCv").addEventListener("pointerdown", e => {
+  const p = cropPos(e), r = CR.r, hit = cropHandles().find(h => Math.abs(p.x - h[0]) < 24 && Math.abs(p.y - h[1]) < 24);
+  if (hit) CR.drag = {m: "size", ox: hit[2].includes("w") ? r.x + r.w : r.x, oy: hit[2].includes("n") ? r.y + r.h : r.y};
+  else if (p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h) CR.drag = {m: "move", dx: p.x - r.x, dy: p.y - r.y};
+  else return;
+  try { e.target.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault();
+});
+$("cropCv").addEventListener("pointermove", e => {
+  const d = CR.drag; if (!d) return; const cv = $("cropCv"), p = cropPos(e), r = CR.r;
+  if (d.m === "move") { r.x = Math.max(0, Math.min(cv.width - r.w, p.x - d.dx)); r.y = Math.max(0, Math.min(cv.height - r.h, p.y - d.dy)); }
+  else {
+    const px = Math.max(0, Math.min(cv.width, p.x)), py = Math.max(0, Math.min(cv.height, p.y)), left = px < d.ox, up = py < d.oy;
+    const aw = left ? d.ox : cv.width - d.ox, ah = up ? d.oy : cv.height - d.oy;
+    let w = Math.max(24, Math.abs(px - d.ox)), h = Math.max(24, Math.abs(py - d.oy));
+    if (CR.ratio) { w = Math.min(Math.max(w, h * CR.ratio), aw, ah * CR.ratio); h = w / CR.ratio; } else { w = Math.min(w, aw); h = Math.min(h, ah); }
+    r.w = w; r.h = h; r.x = left ? d.ox - w : d.ox; r.y = up ? d.oy - h : d.oy;
+  }
+  cropDraw();
+});
+["pointerup", "pointercancel"].forEach(t => $("cropCv").addEventListener(t, () => { CR.drag = null; }));
+$("cropRatio").onchange = () => {
+  CR.ratio = Number($("cropRatio").value) || 0; if (!CR.ratio) return;
+  const cv = $("cropCv"), r = CR.r, cx = r.x + r.w / 2, cy = r.y + r.h / 2, w = Math.min(cv.width, cv.height * CR.ratio), h = w / CR.ratio;
+  r.w = w; r.h = h; r.x = Math.max(0, Math.min(cv.width - w, cx - w / 2)); r.y = Math.max(0, Math.min(cv.height - h, cy - h / 2)); cropDraw();
+};
+$("cropTrim").onclick = () => {
+  const img = CR.img, w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, 1200 / Math.max(w, h)), cw = Math.max(1, Math.round(w * k)), ch = Math.max(1, Math.round(h * k));
+  const cv = document.createElement("canvas"); cv.width = cw; cv.height = ch;
+  const x = cv.getContext("2d", {willReadFrequently: true}); x.drawImage(img, 0, 0, cw, ch);
+  let d; try { d = x.getImageData(0, 0, cw, ch).data; } catch (err) { return notify("Could not trim this picture."); }
+  let hasA = false; for (let i = 3; i < d.length; i += 4) if (d[i] < 250) { hasA = true; break; }
+  let x0 = cw, y0 = ch, x1 = -1, y1 = -1;
+  for (let yy = 0; yy < ch; yy++) for (let xx = 0; xx < cw; xx++) { const i = (yy * cw + xx) * 4; if (d[i + 3] > 16 && (hasA || !(d[i] > 245 && d[i + 1] > 245 && d[i + 2] > 245))) { if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (yy < y0) y0 = yy; if (yy > y1) y1 = yy; } }
+  if (x1 < 0) return notify("There is no empty space to trim.");
+  const pad = Math.round(Math.max(cw, ch) * 0.02), s = CR.s / k, c0 = $("cropCv"), r = CR.r;
+  r.x = Math.max(0, (x0 - pad) * s); r.y = Math.max(0, (y0 - pad) * s);
+  r.w = Math.max(24, Math.min(c0.width, (x1 + 1 + pad) * s) - r.x); r.h = Math.max(24, Math.min(c0.height, (y1 + 1 + pad) * s) - r.y);
+  $("cropRatio").value = "0"; CR.ratio = 0; cropDraw();
+};
+$("cropOk").onclick = () => {
+  const r = CR.r, s = CR.s, img = CR.img, sx = Math.max(0, Math.round(r.x / s)), sy = Math.max(0, Math.round(r.y / s));
+  const sw = Math.min(img.naturalWidth - sx, Math.round(r.w / s)), sh = Math.min(img.naturalHeight - sy, Math.round(r.h / s));
+  if (sw < 4 || sh < 4) return notify("Make the crop box a little bigger.");
+  const k = Math.min(1, 1400 / Math.max(sw, sh)), ow = Math.max(1, Math.round(sw * k)), oh = Math.max(1, Math.round(sh * k));
+  const c = document.createElement("canvas"); c.width = ow; c.height = oh; const x = c.getContext("2d");
+  if ($("cropBg").value === "white") { x.fillStyle = "#fff"; x.fillRect(0, 0, ow, oh); }
+  x.imageSmoothingQuality = "high"; x.drawImage(img, sx, sy, sw, sh, 0, 0, ow, oh);
+  const out = c.toDataURL("image/png").split(",")[1]; if (CR.done) CR.done(out);
+};
+$("cropCancel").onclick = () => { if (CR.done) CR.done(null); };
+$("cropX").onclick = () => { if (CR.done) CR.done(null); };
+function logoControls(c) {
+  const n = Math.round(Number(c.logoSize)), px = n >= 28 && n <= 120 ? n : 56, u = safeUrl(c.logoUrl), hide = c.logoHideName === "yes";
+  return '<div class="logoprev" id="logoPrev">' + (u ? '<img src="' + esc(u) + '" alt="">' : '<span class="muted">Your logo preview appears here</span>') + '</div>' +
+    '<div class="fg"><div class="field"><label>Logo size in the header</label><div class="rng"><input type="range" name="logoSize" id="logoSize" min="28" max="120" step="2" value="' + px + '"><b id="logoSizeV">' + px + 'px</b></div></div>' +
+    '<div class="field"><label>Business name next to the logo</label><select name="logoHideName"><option value="no" ' + (hide ? "" : "selected") + '>Show the name</option><option value="yes" ' + (hide ? "selected" : "") + '>Hide the name (logo only)</option></select></div></div>' +
+    '<p class="muted" style="margin-top:-2px">Tip: if your logo already contains your business name, choose Hide the name and make the logo bigger. Phones show the logo up to 76px tall. The header updates as you move the slider. Press Save details to keep it.</p>';
+}
+function imgField(name, label, value, png, crop) {
   const u = safeUrl(value);
-  return '<div class="field"><label>' + esc(label) + '</label><div class="upl" data-upl="' + name + '" data-png="' + (png ? 1 : 0) + '"><div class="thumb">' + (u ? '<img src="' + esc(u) + '" alt="">' : ico("image")) + '</div><input type="text" name="' + name + '" value="' + esc(value || "") + '" placeholder="Paste an image link or upload"><button type="button" class="btn ghost sm" data-pick>' + ico("upload") + 'Upload</button></div></div>';
+  return '<div class="field"><label>' + esc(label) + '</label><div class="upl" data-upl="' + name + '" data-png="' + (png ? 1 : 0) + '" data-crop="' + (crop ? 1 : 0) + '"><div class="thumb">' + (u ? '<img src="' + esc(u) + '" alt="">' : ico("image")) + '</div><input type="text" name="' + name + '" value="' + esc(value || "") + '" placeholder="Paste an image link or upload"><button type="button" class="btn ghost sm" data-pick>' + ico("upload") + 'Upload</button></div></div>';
 }
 function bindUploads(root) {
   root.querySelectorAll("[data-upl]").forEach(w => {
     const txt = w.querySelector("input[type=text]"), btn = w.querySelector("[data-pick]"), th = w.querySelector(".thumb");
-    txt.oninput = () => { const u = safeUrl(txt.value); th.innerHTML = u ? '<img src="' + esc(u) + '" alt="">' : ico("image"); };
+    txt.oninput = () => { const u = safeUrl(txt.value); th.innerHTML = u ? '<img src="' + esc(u) + '" alt="">' : ico("image"); if (txt.name === "logoUrl" && $("logoPrev")) $("logoPrev").innerHTML = u ? '<img src="' + esc(u) + '" alt="">' : '<span class="muted">Your logo preview appears here</span>'; };
     btn.onclick = async () => {
       const [f] = await pickFiles(false); if (!f) return; btn.disabled = true;
-      try { txt.value = await uploadFile(f, w.dataset.png === "1"); txt.oninput(); notify("Picture uploaded. Remember to save."); } catch (err) { notify(err.message); } finally { btn.disabled = false; }
+      try { const u = w.dataset.crop === "1" ? await cropAndUpload(f) : await uploadFile(f, w.dataset.png === "1"); if (u) { txt.value = u; txt.oninput(); notify("Picture uploaded. Remember to save."); } } catch (err) { notify(err.message); } finally { btn.disabled = false; }
     };
   });
 }
@@ -1261,6 +1568,7 @@ async function loadTab(tab) {
     else if (tab === "orders") await tabOrders(el);
     else if (tab === "inquiries") await tabInquiries(el);
     else if (tab === "content") await tabContent(el);
+    else if (tab === "hero") await tabHero(el);
     else if (tab === "profile") await tabProfile(el);
     else if (tab === "theme") await tabTheme(el);
     else tabSecurity(el);
@@ -1366,14 +1674,15 @@ async function tabProfile(el) {
     fld("email", "Company email (all website forms are sent here)", c.email, "email") + fld("whatsapp", "WhatsApp number with country code", c.whatsapp, "tel", "", "e.g. 263771234567") +
     fld("phone", "Public phone number", c.phone, "tel") + fld("hours", "Opening hours", c.hours, "text", "", "e.g. Mon-Fri 8am-5pm") +
     fld("address", "Business address (shows a map on your website)", c.address, "text", "full", "Street, suburb, city") +
-    '<div class="full">' + imgField("logoUrl", "Logo (square works best)", c.logoUrl, true) + '</div>' +
-    (shop ? '<div class="full">' + imgField("heroImageUrl", "Homepage banner picture (wide image)", c.heroImageUrl, false) + '</div><div class="field full"><label>Homepage headline</label><textarea name="heroTitle">' + esc(c.heroTitle || t.heroTitle) + '</textarea></div><div class="field full"><label>Short description</label><textarea name="description">' + esc(c.description || t.description) + '</textarea></div>' : '') +
+    '<div class="full">' + imgField("logoUrl", "Logo (you can crop it when you upload)", c.logoUrl, true, true) + logoControls(c) + '</div>' +
+    (shop ? '<div class="field full"><label>Homepage headline</label><textarea name="heroTitle">' + esc(c.heroTitle || t.heroTitle) + '</textarea></div><div class="field full"><label>Short description</label><textarea name="description">' + esc(c.description || t.description) + '</textarea></div>' : '') +
     '<div class="field full" style="margin-bottom:0"><label style="font-size:14px;color:var(--text)">Social media links</label><span class="muted">Paste a link for each network you use. Only networks with a link appear on your website.</span></div>' +
     SOCIALS.map(([k, l]) => fld(k, l, c[k], "text", "", "https://" + k + ".com/yourpage")).join("") +
     fld("primaryColor", "Main colour", c.primaryColor || t.primaryColor, "color") + fld("darkColor", "Dark colour", c.darkColor || t.darkColor, "color") + fld("accentColor", "Accent colour", c.accentColor || t.accentColor, "color") +
     (shop ? '<div class="field"><label>Currency</label><select name="currency">' + ["USD", "ZiG", "ZWL"].map(x => '<option ' + (c.currency === x ? "selected" : "") + '>' + x + '</option>').join("") + '</select></div>' : '') +
     '</div><div class="actions"><button class="btn primary" type="submit">Save details</button></div></form>';
   bindUploads(el);
+  const ls = $("logoSize"); if (ls) ls.oninput = () => { $("logoSizeV").textContent = ls.value + "px"; document.documentElement.style.setProperty("--logo-h", ls.value + "px"); };
   $("profileForm").onsubmit = async e => { e.preventDefault(); const b = e.submitter; if (b) b.disabled = true; try { const r = await api("adminSaveConfig", {config: Object.fromEntries(new FormData(e.target))}); applyConfig(r.config); persist(); notify("Details saved"); } catch (err) { notify(err.message); } finally { if (b) b.disabled = false; } };
 }
 
@@ -1411,7 +1720,7 @@ const getPath = (o, p) => p.split(".").reduce((c, k) => c == null ? c : c[k], o)
 function setPath(o, p, v) { const k = p.split("."); let c = o; for (let i = 0; i < k.length - 1; i++) c = c[k[i]]; c[k[k.length - 1]] = v; }
 function initDraft() {
   const d = siteData(), t = T(), pad = (a, n, blank) => { a = (a || []).map(x => ({...x})); while (a.length < n) a.push({...blank}); return a; };
-  sd = {hero: {title: config.heroTitle || t.heroTitle || "", text: config.description || t.description || "", button: config.ctaText || t.ctaText || "", image: config.heroImageUrl || ""},
+  sd = {hero: {title: config.heroTitle || t.heroTitle || "", text: config.description || t.description || "", button: config.ctaText || t.ctaText || ""},
     about: {title: "", text: "", image: "", ...(d.about || {})}, services: (d.services || []).map(x => ({icon: "star", title: "", text: "", ...x})),
     gallery: (d.gallery || []).slice(0, 12), stats: pad(d.stats, 4, {value: "", label: ""}).slice(0, 4), testimonials: (d.testimonials || []).map(x => ({name: "", role: "", text: "", ...x})),
     faq: (d.faq || []).map(x => ({q: "", a: "", ...x})), cta: {title: "", text: "", button: "", ...(d.cta || {})}};
@@ -1426,7 +1735,7 @@ function renderSiteEditor(keep) {
   const addBtn = (path, n, max, label) => n < max ? '<button type="button" class="btn ghost sm" data-add="' + path + '">' + ico("plus") + label + '</button>' : '<span class="muted">Maximum of ' + max + ' reached.</span>';
   const rm = path => '<button type="button" class="btn danger sm" data-rmrow="' + path + '" style="margin-bottom:11px">' + ico("trash") + 'Remove</button>';
   const body = {
-    hero: '<div class="fg">' + sArea("hero.title", "Main headline") + sArea("hero.text", "Short intro under the headline") + sIn("hero.button", "Main button text", "e.g. Get a Quote") + '<div></div>' + sImg("hero.image", "Hero picture (optional, wide landscape works best)") + '</div>',
+    hero: '<div class="fg">' + sArea("hero.title", "Main headline") + sArea("hero.text", "Short intro under the headline") + sIn("hero.button", "Main button text", "e.g. Get a Quote") + '</div>',
     about: '<div class="fg">' + sIn("about.title", "Heading", "e.g. Who we are") + '<div></div>' + sArea("about.text", "Your story", "Tell visitors who you are and why they can trust you.") + sImg("about.image", "Picture of your team or premises") + sIn("about.points.0", "Highlight 1", "e.g. Licensed and insured") + sIn("about.points.1", "Highlight 2") + sIn("about.points.2", "Highlight 3") + '</div>',
     services: sd.services.map((s, i) => '<div class="rrow"><div class="fg"><div class="field"><label>Icon</label><select data-p="services.' + i + '.icon">' + SERVICE_ICONS.map(n => '<option ' + (n === s.icon ? "selected" : "") + ' value="' + n + '">' + n.charAt(0).toUpperCase() + n.slice(1) + '</option>').join("") + '</select></div>' + sIn("services." + i + ".title", "Service name") + sArea("services." + i + ".text", "Short description") + '</div>' + rm("services." + i) + '</div>').join("") + addBtn("services", sd.services.length, 8, "Add a service"),
     stats: '<p class="muted" style="margin-top:0">Short numbers that build trust, e.g. 10+ Years of experience. Leave a row empty to hide it.</p>' + sd.stats.map((s, i) => '<div class="fg"><div class="field"><label>Number ' + (i + 1) + '</label><input type="text" data-p="stats.' + i + '.value" value="' + esc(s.value) + '" placeholder="e.g. 500+"></div><div class="field"><label>Label</label><input type="text" data-p="stats.' + i + '.label" value="' + esc(s.label) + '" placeholder="e.g. Happy clients"></div></div>').join(""),
@@ -1472,8 +1781,92 @@ $("adminContent").addEventListener("click", async e => {
       testimonials: sd.testimonials.filter(x => nz(x.text)).map(x => ({name: nz(x.name), role: nz(x.role), text: nz(x.text)})),
       faq: sd.faq.filter(x => nz(x.q)).map(x => ({q: nz(x.q), a: nz(x.a)})), cta: {title: nz(sd.cta.title), text: nz(sd.cta.text), button: nz(sd.cta.button)}};
     b.disabled = true; b.textContent = "Saving…";
-    try { const r = await api("adminSaveConfig", {config: {heroTitle: nz(sd.hero.title), description: nz(sd.hero.text), ctaText: nz(sd.hero.button), heroImageUrl: nz(sd.hero.image), siteContent: JSON.stringify(content)}}); applyConfig(r.config); persist(); notify("Website updated. Your changes are live."); }
+    try { const r = await api("adminSaveConfig", {config: {heroTitle: nz(sd.hero.title), description: nz(sd.hero.text), ctaText: nz(sd.hero.button), siteContent: JSON.stringify(content)}}); applyConfig(r.config); persist(); notify("Website updated. Your changes are live."); }
     catch (err) { notify(err.message); } finally { b.disabled = false; b.textContent = "Save website"; }
+  }
+});
+
+
+/* ===== ADMIN: hero section (style, pictures, video, overlay) + highlights ===== */
+let hd = null, fd = null;
+const normHd = () => ({style: hd.style, images: hd.images.filter(Boolean).slice(0, 6), video: hd.video || "", overlay: hd.overlay, tone: hd.tone, mobile: hd.mobile, speed: hd.speed, sound: !!hd.sound});
+async function tabHero(el) {
+  config = {...config, ...(await api("adminConfig")).config};
+  const c = heroCfgOf(); hd = {style: c.style, images: c.images.slice(), video: c.video, overlay: c.overlay, tone: c.tone, mobile: c.mobile, speed: c.speed, sound: c.sound};
+  const f = featuresCfg(); fd = {show: f.show, items: f.items.map(x => ({...x}))};
+  renderHeroEditor();
+}
+function updateHPrev() { const b = $("hPrev"); if (b) applyHero(b, $("hPrevMedia"), normHd()); }
+function renderHeroEditor() {
+  const el = $("adminContent"), site = kind() === "site", st = hd.style, isMedia = ["image", "slides", "video"].includes(st);
+  const styles = [["gradient", "Colour only", "sparkles"], ["image", "Single picture", "image"], ["slides", "Slideshow", "layers"], ["video", "Video", "play"]]; if (site) styles.push(["split", "Picture beside text", "columns"]);
+  const one = (label) => { const v = hd.images[0] || "", u = safeUrl(v); return '<div class="field"><label>' + label + '</label><div class="upl"><div class="thumb">' + (u ? '<img src="' + esc(u) + '" alt="">' : ico("image")) + '</div><input type="text" data-hp="img0" value="' + esc(v) + '" placeholder="Paste a picture link or upload"><button type="button" class="btn ghost sm" data-hup>' + ico("upload") + 'Upload</button></div></div>'; };
+  let media = "";
+  if (st === "gradient") media = '<p class="muted">No picture. The hero uses your brand colours with a soft animated design.</p>';
+  else if (st === "image" || st === "split") media = one(st === "split" ? "Picture shown beside the text" : "Hero picture (wide landscape works best)");
+  else if (st === "slides") media = '<div class="field"><label>Slideshow pictures (2 to 6). They fade into each other.</label></div><div class="imgs">' + hd.images.map((u, i) => '<div class="im"><img src="' + esc(u) + '" alt=""><button type="button" data-hrm="' + i + '" aria-label="Remove picture">' + ico("x") + '</button></div>').join("") + (hd.images.length < 6 ? '<button type="button" class="addim" data-hadd>' + ico("upload") + '<span>Add pictures</span></button>' : '') + '</div>' +
+    (hd.images.length < 6 ? '<div class="upl" style="margin-top:10px"><input type="text" id="hUrl" placeholder="Or paste a picture link"><button type="button" class="btn ghost sm" data-hurl>Add link</button></div>' : '') +
+    '<div class="field" style="max-width:240px"><label>Change picture every</label><select data-hp="speed">' + [3, 5, 7, 10].map(n => '<option value="' + n + '" ' + (hd.speed === n ? "selected" : "") + '>' + n + ' seconds</option>').join("") + '</select></div>';
+  else media = '<div class="field"><label>Video link (YouTube, Facebook, or an MP4/WebM file)</label><input type="text" data-hp="video" value="' + esc(hd.video) + '" placeholder="e.g. https://youtu.be/nWQ1azRAhEk or a public Facebook video link"></div>' +
+    '<div class="upl" style="margin:0 0 8px"><button type="button" class="btn primary sm" data-hvup>' + ico("upload") + 'Upload a video file</button><span class="muted" id="hvStat">MP4 (H.264) or WebM. There is no size limit, but smaller files load faster for visitors.</span></div><div class="vprog hidden" id="hvBar"><i id="hvFill"></i></div>' +
+    '<div class="field" style="max-width:380px"><label>Video sound</label><select data-hp="sound"><option value="off" ' + (hd.sound ? "" : "selected") + '>Sound off (muted)</option><option value="on" ' + (hd.sound ? "selected" : "") + '>Sound on (visitors can mute it)</option></select></div>' +
+    '<p class="muted" style="margin-top:-4px">Works with YouTube links (including youtu.be and Shorts links), public Facebook video links (facebook.com or fb.watch) and MP4 or WebM files, which you can upload here or paste as a link. Uploaded videos are kept in your Google Drive and streamed from there, so a very busy website can hit Google download limits; for heavy traffic use a YouTube link. Browsers do not let a video play with sound until the visitor interacts with the page, so with Sound on the video starts muted, shows a Tap for sound button, and the sound switches on at the first tap or click. Facebook videos must be public, and Facebook may show its own play button.</p>' + one("Cover picture (shown while the video loads, and for visitors who prefer no motion)");
+  const look = isMedia ? '<h3 style="margin:18px 0 6px">Picture overlay and readability</h3><div class="fg"><div class="field"><label>Overlay style</label><select data-hp="tone"><option value="dark" ' + (hd.tone === "dark" ? "selected" : "") + '>Dark overlay with white text</option><option value="light" ' + (hd.tone === "light" ? "selected" : "") + '>Light overlay with dark text</option></select></div>' +
+    '<div class="field"><label>Overlay strength</label><div class="rng"><input type="range" min="0" max="90" step="5" value="' + hd.overlay + '" data-hp="overlay"><b id="ovv">' + hd.overlay + '%</b></div></div>' +
+    '<div class="field full"><label>On phones</label><select data-hp="mobile"><option value="stacked" ' + (hd.mobile === "stacked" ? "selected" : "") + '>Picture on top, text below (picture stays clear, recommended)</option><option value="overlay" ' + (hd.mobile === "overlay" ? "selected" : "") + '>Text over the picture</option></select></div></div>' +
+    '<p class="muted" style="margin-top:0">Low strength shows a bright, clear picture. High strength gives a dark, moody picture where text is easiest to read.</p>' +
+    '<div class="hprev" id="hPrev"><div class="heroMedia" id="hPrevMedia"></div><div class="hp-copy"><b>Your headline goes here</b><span>Supporting text sits on top of the picture.</span></div></div>' : '';
+  let feats = "";
+  if (!site) feats = '<details class="acc" style="margin-top:14px"><summary>Highlights under the hero' + ico("chev") + '</summary><div><div class="field" style="max-width:260px"><label>Show this strip</label><select data-fp="show"><option value="true" ' + (fd.show ? "selected" : "") + '>Yes, show it</option><option value="false" ' + (fd.show ? "" : "selected") + '>No, hide it</option></select></div>' +
+    fd.items.map((x, i) => '<div class="rrow"><div class="fg"><div class="field"><label>Icon</label><select data-fp="items.' + i + '.icon">' + SERVICE_ICONS.map(n => '<option ' + (n === x.icon ? "selected" : "") + ' value="' + n + '">' + n.charAt(0).toUpperCase() + n.slice(1) + '</option>').join("") + '</select></div><div class="field"><label>Title</label><input type="text" data-fp="items.' + i + '.title" value="' + esc(x.title) + '"></div><div class="field full"><label>Short line under the title</label><input type="text" data-fp="items.' + i + '.text" value="' + esc(x.text || "") + '"></div></div><button type="button" class="btn danger sm" data-frm="' + i + '" style="margin-bottom:11px">' + ico("trash") + 'Remove</button></div>').join("") +
+    '<div class="actions">' + (fd.items.length < 4 ? '<button type="button" class="btn ghost sm" data-fadd>' + ico("plus") + 'Add a highlight</button>' : '') + '<button type="button" class="btn ghost sm" data-freset>Reset to style defaults</button></div></div></details>';
+  const open = el.querySelector("details") && el.querySelector("details").open, y = $("adminModal").scrollTop;
+  el.innerHTML = '<h3 style="margin:0 0 8px">Hero style</h3><div class="themes" id="hStyles">' + styles.map(s => '<button type="button" class="tcard ' + (st === s[0] ? "on" : "") + '" data-hs="' + s[0] + '"><div class="sw" style="background:var(--ink)">' + ico(s[2]) + '</div><b>' + s[1] + '</b></button>').join("") + '</div>' + media + look + feats +
+    '<div class="actions" style="position:sticky;bottom:0;background:var(--surface);padding:12px 0"><button class="btn primary" id="hSave" type="button">Save hero section</button></div>';
+  if (open) { const d = el.querySelector("details"); if (d) d.open = true; }
+  $("adminModal").scrollTop = y; hydrate(el); updateHPrev();
+}
+$("adminContent").addEventListener("input", e => {
+  if (currentTab !== "hero" || !hd) return;
+  const h = e.target.closest("[data-hp]"), f = e.target.closest("[data-fp]");
+  if (h) {
+    const k = h.dataset.hp, v = h.value;
+    if (k === "img0") { hd.images[0] = v.trim(); if (!hd.images[0]) hd.images.shift(); const th = h.closest(".upl").querySelector(".thumb"), u = safeUrl(v); th.innerHTML = u ? '<img src="' + esc(u) + '" alt="">' : ico("image"); }
+    else if (k === "overlay") { hd.overlay = Number(v); $("ovv").textContent = v + "%"; }
+    else if (k === "speed") hd.speed = Number(v);
+    else if (k === "sound") hd.sound = v === "on";
+    else hd[k] = v;
+    updateHPrev();
+  } else if (f) { setPath(fd, f.dataset.fp, f.dataset.fp === "show" ? f.value === "true" : f.value); }
+});
+$("adminContent").addEventListener("click", async e => {
+  if (currentTab !== "hero" || !hd) return;
+  const hs = e.target.closest("[data-hs]"), hup = e.target.closest("[data-hup]"), hadd = e.target.closest("[data-hadd]"), hrm = e.target.closest("[data-hrm]"), hurl = e.target.closest("[data-hurl]"), fadd = e.target.closest("[data-fadd]"), frm = e.target.closest("[data-frm]");
+  if (e.target.closest("[data-hvup]")) { heroVideoUpload(e.target.closest("[data-hvup]")); return; }
+  if (hs) { hd.style = hs.dataset.hs; renderHeroEditor(); }
+  else if (hrm) { hd.images.splice(+hrm.dataset.hrm, 1); renderHeroEditor(); }
+  else if (hurl) { const u = normUrl($("hUrl").value); if (!u) return notify("Paste a valid picture link."); hd.images.push(u); renderHeroEditor(); }
+  else if (hup) { const [f] = await pickFiles(false); if (!f) return; hup.disabled = true; try { hd.images[0] = await uploadFile(f, false); notify("Picture uploaded. Remember to save."); renderHeroEditor(); } catch (err) { notify(err.message); hup.disabled = false; } }
+  else if (hadd) {
+    const files = (await pickFiles(true)).slice(0, 6 - hd.images.length); if (!files.length) return; hadd.disabled = true; hadd.querySelector("span").textContent = "Uploading…";
+    try { for (const f of files) hd.images.push(await uploadFile(f, false)); notify(files.length + " picture" + (files.length > 1 ? "s" : "") + " added"); } catch (err) { notify(err.message); }
+    renderHeroEditor();
+  }
+  else if (fadd) { fd.items.push({icon: "star", title: "", text: ""}); renderHeroEditor(); $("adminContent").querySelector("details").open = true; }
+  else if (frm) { fd.items.splice(+frm.dataset.frm, 1); renderHeroEditor(); $("adminContent").querySelector("details").open = true; }
+  else if (e.target.closest("[data-freset]")) { fd = {show: true, items: T().features.map(f => ({icon: f[0], title: f[1], text: f[2]}))}; renderHeroEditor(); $("adminContent").querySelector("details").open = true; }
+  else if (e.target.closest("#hSave")) {
+    const cfg = normHd(), b = $("hSave");
+    if (["image", "split"].includes(cfg.style)) cfg.images = cfg.images.slice(0, 1);
+    if (["image", "slides", "split"].includes(cfg.style) && !cfg.images.length) return notify("Add at least one picture first.");
+    if (cfg.style === "slides" && cfg.images.length < 2) return notify("Add at least two pictures for a slideshow.");
+    if (cfg.style === "video" && !cfg.video && !cfg.images.length) return notify("Add a video link first.");
+    if (cfg.style === "video" && cfg.video && !ytId(cfg.video) && !fbEmbed(cfg.video) && !safeUrl(cfg.video)) return notify("That video link is not supported. Use a YouTube link, a public Facebook video link or a direct MP4 link.");
+    const payload = {heroCfg: JSON.stringify(cfg), heroImageUrl: cfg.images[0] || ""};
+    if (kind() === "shop") payload.features = JSON.stringify({show: fd.show, items: fd.items.filter(x => String(x.title || "").trim()).map(x => ({icon: x.icon || "star", title: String(x.title).trim(), text: String(x.text || "").trim()}))});
+    b.disabled = true; b.textContent = "Saving…";
+    try { const r = await api("adminSaveConfig", {config: payload}); applyConfig(r.config); persist(); notify("Hero section updated. Your changes are live."); }
+    catch (err) { notify(err.message); } finally { b.disabled = false; b.textContent = "Save hero section"; }
   }
 });
 
